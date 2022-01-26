@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+    
+    <resultMap type="com.spring.board.vo.BoardVo" id="boardVo">
+    	<result property="boardType" 	column="BOARD_TYPE"/>
+    	<result property="boardNum" 	column="BOARD_NUM"/>
+    	<result property="boardTitle" 	column="BOARD_TITLE"/>
+    	<result property="boardComment" column="BOARD_COMMENT"/>
+    	<result property="creator" 		column="CREATOR"/>
+    	<collection property="comCode" resultMap="comCode"/>
+    </resultMap>
+    
+    <resultMap type="com.spring.board.vo.ComCode" id="comCode">
+    	<result property="codeType" 	column="CODE_TYPE"/>
+    	<result property="codeId" 	column="CODE_ID"/>
+    	<result property="codeName" 	column="CODE_NAME"/>
+    </resultMap>
+    
+    <select id="boardList" parameterType="com.spring.board.vo.PageVo" resultMap="boardVo">
+    /* board.boardList*/
+        SELECT 
+		   C.CODE_NAME
+		  ,B.BOARD_TYPE
+		  ,B.BOARD_NUM
+		  ,B.BOARD_TITLE
+		  ,B.BOARD_COMMENT
+		  ,B.TOTAL_CNT
+		  ,B.CREATOR
+		FROM 
+		(
+		  SELECT
+		      	BOARD_TYPE
+				,BOARD_NUM
+				,BOARD_TITLE
+				,BOARD_COMMENT
+				,CREATOR
+		      	,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
+		      	,COUNT(*) OVER() AS TOTAL_CNT
+			FROM
+				BOARD
+	<if test="boardTypeList != null">
+  			WHERE BOARD_TYPE IN
+	   <foreach collection="boardTypeList" item="boardTypeList" open="(" close=")" separator=",">
+	      		#{boardTypeList}
+	   </foreach>
+	</if>
+		) B
+		<!-- 컴코드 조인 코드네임 추출을 위해 -->
+		,(
+			SELECT
+				CODE_NAME
+				,CODE_ID
+			FROM
+				COM_CODE
+		 ) C
+		
+		WHERE
+			B.BOARD_TYPE = C.CODE_ID
+		AND
+			B.NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
+		<!-- 조회컬럼 변경 -->
+    </select>
+    
+    <select id="boardTotal" parameterType="Integer" resultType="Integer">
+    /*board.boardTotal*/
+		  SELECT
+		      	COUNT(*) AS TOTAL_CNT
+			FROM
+				BOARD	
+    </select>
+    	
+    <select id="boardView" parameterType="com.spring.board.vo.BoardVo" resultMap="boardVo">
+    /*board.boardView*/
+    	SELECT
+        	BOARD_TYPE
+			,BOARD_NUM
+			,BOARD_TITLE
+			,BOARD_COMMENT
+			,CREATOR
+		FROM
+			BOARD
+    	WHERE 
+    		BOARD_TYPE = #{boardType}
+    	AND 
+    		BOARD_NUM  = #{boardNum}
+    </select>	
+    
+    <insert id="boardInsert" parameterType="com.spring.board.vo.BoardVo">
+    /*board.boardInsert*/ 
+        INSERT INTO 
+        BOARD
+        (BOARD_TYPE
+        ,BOARD_NUM
+        ,BOARD_TITLE
+        ,BOARD_COMMENT
+        ,CREATOR
+        ,CREATE_TIME
+        ,MODIFIER
+        ,MODIFIED_TIME
+        )
+        VALUES
+        (#{boardType}
+        ,(SELECT TO_NUMBER(NVL(MAX(BOARD_NUM),0)+1)
+	    FROM
+	    	BOARD
+	    WHERE
+	    BOARD_TYPE =#{boardType})
+        ,#{boardTitle}
+        ,#{boardComment}
+        ,#{creator}
+        ,TO_CHAR(SYSDATE)
+        ,#{creator}
+        ,TO_CHAR(SYSDATE)
+        )
+    </insert>
+    
+    <select id="boardDelete" parameterType="com.spring.board.vo.PageVo">
+        /*board.boardDelete*/
+    	delete
+		FROM
+			BOARD
+    	WHERE 	BOARD_TYPE = #{boardType}
+    	AND 	BOARD_NUM  = #{boardNum}
+    </select>
+    <select id="boardUpdate" parameterType="com.spring.board.vo.BoardVo">
+    /* board.boardUpdate */
+	    UPDATE BOARD 
+	    SET 
+	    	BOARD_TITLE	= #{boardTitle}
+	        ,BOARD_COMMENT = #{boardComment}
+	        ,MODIFIER = #{modifier}
+	       	,MODIFIED_TIME = TO_CHAR(SYSDATE)
+       	WHERE BOARD_TYPE = #{boardType}
+    	AND BOARD_NUM = #{boardNum}
+    </select>
+    
+    <select id="boardSelectComCode" parameterType="String" resultMap="comCode">
+    /*board.boardSelectComCode*/
+    	SELECT
+    		CODE_ID
+    		,CODE_NAME
+    	FROM COM_CODE
+    	WHERE CODE_TYPE=#{codeType}
+    	
+    
+    </select>
+</mapper>
