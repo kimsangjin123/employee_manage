@@ -54,7 +54,7 @@ public class EmployeeController {
 		
 		LocalDate ldate=LocalDate.now();
 		String todayDate=ldate.getYear()+"년"+ldate.getMonthValue()+"월"+ldate.getDayOfMonth()+"일";
-		String textPath="D:\\workspace\\springBoard\\src\\main\\resources\\TFF_재직증명서.docx";
+		String textPath="D:\\git\\springBoard\\src\\main\\resources\\TFF_재직증명서.docx";
 		evo=eService.employeeSelectOne(evo);
 		File f=new File(textPath);
 		
@@ -96,7 +96,7 @@ public class EmployeeController {
 						              }
 						              if (text != null && text.contains("ssNumber")) {
 						            	  
-						            	  text = text.replace("ssNumber", evo.getSsNumber());
+						            	  text = text.replace("ssNumber","준비중");
 						                r.setText(text,0);
 						              }
 						              if (text != null && text.contains("startDate")) {
@@ -127,7 +127,7 @@ public class EmployeeController {
 						              }
 						              if (text != null && text.contains("employeeAddress")) {
 						            	  
-						            	  text = text.replace("employeeAddress", evo.getEmployeeAddress());
+						            	  text = text.replace("employeeAddress", "아직 준비중입니다" );
 						                r.setText(text,0);
 						              }    
 						               
@@ -178,7 +178,7 @@ public class EmployeeController {
 		issuanceNumber=ldate.toString().replace("-", "").substring(2)+"001";
 		String todayDate=ldate.getYear()+"년"+ldate.getMonthValue()+"월"+ldate.getDayOfMonth()+"일";
 		// String textPath="D:/employee/TFF_경력증명서.docx";
-		String textPath="D:\\workspace\\springBoard\\src\\main\\resources\\TFF_경력증명서.docx";
+		String textPath="D:\\git\\springBoard\\src\\main\\resources\\TFF_경력증명서.docx";
 		
 		
 		// workDays가 365보다 클 때 년으로 나타내기
@@ -218,7 +218,7 @@ public class EmployeeController {
 						              }
 						              else if (text != null && text.contains("ssNumber")) {
 						            	  
-						            	  text = text.replace("ssNumber", evo.getSsNumber());
+						            	  text = text.replace("ssNumber", "준비중");
 						                r.setText(text,0);
 						              }
 						              else if (text != null && text.contains("startDate")) {
@@ -258,7 +258,8 @@ public class EmployeeController {
 						              }
 						              else if (text != null && text.contains("employeeAddress")) {
 						            	  
-						            	  text = text.replace("employeeAddress", evo.getEmployeeAddress());
+						            	  // 수정할 부분
+						            	  text = text.replace("employeeAddress", "아직준비중입니다");
 						                r.setText(text,0);
 						              }    
 						               
@@ -314,8 +315,9 @@ public class EmployeeController {
 		
 		int resultCnt=0;
 		
+			
 		resultCnt=eService.insert(evo);
-		
+
 		result.put("success", (resultCnt >0)?"Y":"N");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ",result);
 		
@@ -346,21 +348,16 @@ public class EmployeeController {
 		{
 			employeePageVo.setPageNo(page);
 		}
+		int totalCnt = eService.selectEmployeeCnt();
+		employeePageVo.calpage(totalCnt);
+		
 		List<EmployeeVo> eList=new ArrayList<>();
 		
 		eList = eService.employeeList(employeePageVo);
-		int totalCnt = eService.selectEmployeeCnt();
-		
-		
 		result.put("success", (eList.size() > 0)?"Y":"N");
 		result.put("eList", eList);
 		result.put("totalCnt", totalCnt);
-		result.put("pageVo", employeePageVo);
-		
-		logger.info(eList.get(0).getEmployeeName().toString());
-		logger.info(result.get("success").toString());
-		logger.info(result.get("pageVo").toString());
-		
+		result.put("employeePageVo", employeePageVo);
 		
 		String callbackMsg = commonUtil.getJsonCallBackString(" ",result);
 		

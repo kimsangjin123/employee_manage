@@ -5,7 +5,8 @@ import java.time.LocalDate;
 public class EmployeeVo {
 	private int employeeId;
 	private String employeeName;
-	private String ssNumber;
+	private int ssNumber1;
+	private int ssNumber2;
 	private String department;
 	private String employeeJob;
 	private String startDate;
@@ -15,8 +16,11 @@ public class EmployeeVo {
 	private String issuanceNumber;
 	private String workType;
 	private String sal;	
-	private String employeeAddress;
-	
+	private String employeeAddr1;
+	private String employeeAddr2;
+	private String employeeAddr3;
+	private String employeeAddr4;
+	private String employeeAddr5;
 	private EmployeeCodeVo employeeCodeVo;
 
 	public Integer getEmployeeId() {
@@ -37,11 +41,19 @@ public class EmployeeVo {
 	public void setEmployeeJob(String employeeJob) {
 		this.employeeJob = employeeJob;
 	}
-	public String getSsNumber() {
-		return ssNumber;
+
+	
+	public int getSsNumber1() {
+		return ssNumber1;
 	}
-	public void setSsNumber(String ssNumber) {
-		this.ssNumber = ssNumber;
+	public void setSsNumber1(int ssNumber1) {
+		this.ssNumber1 = ssNumber1;
+	}
+	public int getSsNumber2() {
+		return ssNumber2;
+	}
+	public void setSsNumber2(int ssNumber2) {
+		this.ssNumber2 = ssNumber2;
 	}
 	public String getDepartment() {
 		return department;
@@ -100,17 +112,41 @@ public class EmployeeVo {
 	public void setEmployeeId(int employeeId) {
 		this.employeeId = employeeId;
 	}
-	public String getEmployeeAddress() {
-		return employeeAddress;
-	}
-	public void setEmployeeAddress(String employeeAddress) {
-		this.employeeAddress = employeeAddress;
-	}
 	public EmployeeCodeVo getEmployeeCodeVo() {
 		return employeeCodeVo;
 	}
 	public void setEmployeeCodeVo(EmployeeCodeVo employeeCodeVo) {
 		this.employeeCodeVo = employeeCodeVo;
+	}
+	public String getEmployeeAddr1() {
+		return employeeAddr1;
+	}
+	public void setEmployeeAddr1(String employeeAddr1) {
+		this.employeeAddr1 = employeeAddr1;
+	}
+	public String getEmployeeAddr2() {
+		return employeeAddr2;
+	}
+	public void setEmployeeAddr2(String employeeAddr2) {
+		this.employeeAddr2 = employeeAddr2;
+	}
+	public String getEmployeeAddr3() {
+		return employeeAddr3;
+	}
+	public void setEmployeeAddr3(String employeeAddr3) {
+		this.employeeAddr3 = employeeAddr3;
+	}
+	public String getEmployeeAddr4() {
+		return employeeAddr4;
+	}
+	public void setEmployeeAddr4(String employeeAddr4) {
+		this.employeeAddr4 = employeeAddr4;
+	}
+	public String getEmployeeAddr5() {
+		return employeeAddr5;
+	}
+	public void setEmployeeAddr5(String employeeAddr5) {
+		this.employeeAddr5 = employeeAddr5;
 	}
 	
 	

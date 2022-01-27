@@ -5,7 +5,10 @@
     <resultMap type="com.spring.board.vo.EmployeeVo" id="EmployeeVo">
     <result property="employeeId" column="EMPLOYEE_ID"/>
     <result property="employeeName" column="EMPLOYEE_NAME"/>
-    <result property="ssNumber" column="SS_NUMBER"/>
+    <result property="ssNumber1" column="SS_NUMBER1"/>
+    <result property="ssNumber2" column="SS_NUMBER2"/>
+    
+    
     <result property="department" column="DEPARTMENT"/>
      <result property="employeeJob" column="EMPLOYEE_JOB"/>
     <result property="startDate" column="START_DATE"/>
@@ -14,7 +17,11 @@
     <result property="workType" column="WORK_TYPE"/>
     <result property="workDays" column="WORK_DAYS"/>
     <result property="endDate" column="END_DATE"/>
-    <result property="employeeAddress" column="EMPLOYEE_ADDRESS"/>
+    <result property="employeeAddr1" column="EMPLOYEE_ADDR1"/>
+    <result property="employeeAddr2" column="EMPLOYEE_ADDR2"/>
+    <result property="employeeAddr3" column="EMPLOYEE_ADDR3"/>
+    <result property="employeeAddr4" column="EMPLOYEE_ADDR4"/>
+    <result property="employeeAddr5" column="EMPLOYEE_ADDR5"/>
 	<collection property="employeeCodeVo" resultMap="EmployeeCodeVo"/>
     </resultMap>
 	
@@ -40,7 +47,11 @@
 	        ,REGI_DATE
 	        ,SAL
 	        ,WORK_TYPE
-	        ,EMPLOYEE_ADDRESS
+	        ,EMPLOYEE_ADDR1
+	        ,EMPLOYEE_ADDR2
+	        ,EMPLOYEE_ADDR3
+	        ,EMPLOYEE_ADDR4
+	        ,EMPLOYEE_ADDR5
         )
         VALUES
         (
@@ -53,7 +64,11 @@
 	        ,NULL
 	        ,NULL
 	        ,#{workType}
-	        ,#{employeeAddress}
+	        ,NVL(#{employeeAddr1},NULL)
+	        ,NVL(#{employeeAddr2},NULL)
+	        ,NVL(#{employeeAddr3},NULL)
+	        ,NVL(#{employeeAddr4},NULL)
+	        ,NVL(#{employeeAddr5},NULL)
         )
 
 </insert>  
@@ -124,10 +139,15 @@
 		 ,D.CODE_NAME AS WORK_TYPE
 		 ,TO_CHAR(A.START_DATE,'YYYY-MM-DD') AS START_DATE
 		 ,TO_CHAR(A.REGI_DATE,'YYYY-MM-DD') AS REGI_DATE
-		 ,A.SS_NUMBER
+		 ,A.SS_NUMBER1
+		 ,A.SS_NUMBER2
 		 ,TO_CHAR(NVL(A.REGI_DATE - A.START_DATE,CEIL(SYSDATE-A.START_DATE))) AS WORK_DAYS
 		 ,TO_CHAR(NVL(A.REGI_DATE,SYSDATE),'YYYY-MM-DD') AS END_DATE
-		 ,A.EMPLOYEE_ADDRESS
+		 ,A.EMPLOYEE_ADDR1
+		 ,A.EMPLOYEE_ADDR2
+		 ,A.EMPLOYEE_ADDR3
+		 ,A.EMPLOYEE_ADDR4
+		 ,A.EMPLOYEE_ADDR5
 		 
 	FROM
 		EMPLOYEE A

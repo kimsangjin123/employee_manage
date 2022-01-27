@@ -10,56 +10,17 @@
 <script type="text/javascript">
 
 	$j(document).ready(function(){
-			var $frm = $j('#frmSearch :input');
-			var param = $frm.serialize();
-			getPage(param);
-			
-			
-			// 조회클릭시 페이지 가져오기 작동
-			$j('#search').on('click',function(){
-				// alert('조회클릭');
-				$j("#boardSelect").empty();
-				var $frm = $j('#frmSearch :input');
-				var param = $frm.serialize();
-				getPage(param);
-			});
+
+			getPage(1);
 			
 		
-		
-		// 전체 클릭시 모두 체크 or 해제
-		$j('input:checkbox[name="boardTypeAll"]').click(function(){
-			if($j('input:checkbox[name="boardTypeAll"]').is(":checked"))
-			{
-				// alert('모두체크');
-
-				$j('input:checkbox[name="boardTypeList"]').each(function(){this.checked=true;});
-
-			}else
-			{
-				// alert('체크해제');
-
-				$j('input:checkbox[name="boardTypeList"]').each(function(){this.checked=false;});
-
-			}
-		
-		
-		});
-		
-		// boardtypeList 체크 해제시 전체선택해제
-		$j('.boardTypeList').click(function(){
-		
-		if($j('input[name=boardTypeList]:checked').length==4){
-			$j('#boardTypeAll').prop("checked",true);
-		}else{
-			$j('#boardTypeAll').prop("checked",false);
-		}	
-		
-		
-		});
 	});
 
 // 페이징
-function getPage(param){
+function getPage(pageNo){
+			$j('input[name="pageNo"]').val(pageNo);
+			var $frm = $j('#frmSearch :input');
+			var param = $frm.serialize();
 
 			$j.ajax({
 			    url : "/employee/listAjax.do",
@@ -71,12 +32,13 @@ function getPage(param){
 			    success: function(data, textStatus, jqXHR)
 			    {
 					// alert("작성완료");
-					
-					
+			
 					const totalCnt=data.totalCnt;
 					const eList=data.eList;
-					const pageVo=data.employeePageVo;
+					const employeePageVo=data.employeePageVo;
+					
 
+					// 리스트
 					var rowData="";
 					for(var i=0; i<eList.length; i++){
 				
@@ -91,10 +53,52 @@ function getPage(param){
 					rowData+="'</a>"+eList[i]['employeeName']+"</td>";
 					rowData+="</tr>";
 					}
-					
+					$j("#boardSelect").empty();
 					$j("#boardSelect").html(rowData);
-					
 					$j("#totalCnt").text("total"+totalCnt);
+					
+					// paging
+					
+					var startPage= employeePageVo.pageStart;
+					var endPage= employeePageVo.pageEnd;
+					var pageTotalCnt = employeePageVo.pageTotalCnt;
+					var pageNo = employeePageVo.pageNo;
+					var pagingRowData="";
+					
+					pagingRowData+="<tr><td colspan='3'>";
+					
+					if(pageNo<=10){
+					
+					}else{
+					pagingRowData+="<a href='javascript:getPage("+(startPage-1)+")'>"
+					pagingRowData+="[PREV]</a>";
+					}
+					
+					for(var i=startPage;i<=endPage;i++){
+						
+						if(pageNo==i){
+							pagingRowData+=i;
+						}
+						else{
+						pagingRowData+="<a href='javascript:getPage("+i+")'> ";
+						pagingRowData+=i;
+						pagingRowData+=" </a>";
+						}
+					}
+					
+					if(endPage!=pageTotalCnt){
+					pagingRowData+="<a href='javascript:getPage("+(endPage+1)+")'>"
+					 
+				
+					pagingRowData+="[NEXT]</a>";
+					}
+					
+					pagingRowData+="</td></tr>";
+					
+					
+					
+					$j("#pagingBoard").empty();
+					$j('#pagingBoard').html(pagingRowData);
 					// alert("메세지:"+data.succcess); //undefined 라고 뜬다 찾아보자
 				
 			    },
@@ -140,6 +144,9 @@ function getPage(param){
 				<tbody id="boardSelect">
 
 				</tbody>
+				<tbody id="pagingBoard" align="center">
+				
+				</tbody>
 
 			</table>
 		</td>
@@ -158,7 +165,7 @@ function getPage(param){
 			<form id="frmSearch">
 				<input type="hidden" name="pageNo" value="1">	
 
-				<input type="button" id="search" value="조회">
+
 			</form>
 		</td>
 	</tr>
