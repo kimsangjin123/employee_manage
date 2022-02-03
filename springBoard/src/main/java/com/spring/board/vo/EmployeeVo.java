@@ -149,7 +149,19 @@ public class EmployeeVo {
 		this.employeeAddr5 = employeeAddr5;
 	}
 	
+
+	public String ssNumberToString() {
+		
+		return getSsNumber1()+"-"+ getSsNumber2();
+	}
 	
+	public String employeeAddrToString() {
+		
+		String addr= (getEmployeeAddr2()!=null) ? getEmployeeAddr2():getEmployeeAddr3();
+		addr+=getEmployeeAddr4()!=null?(", "+getEmployeeAddr4()):"";
+		
+		return addr;
+	}
 	
 	
 }

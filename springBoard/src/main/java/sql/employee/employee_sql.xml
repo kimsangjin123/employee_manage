@@ -40,7 +40,8 @@
 	    (
 	    	EMPLOYEE_ID
 	        ,EMPLOYEE_NAME
-	        ,SS_NUMBER
+	        ,SS_NUMBER1
+	        ,SS_NUMBER2
 	        ,DEPARTMENT
 	        ,EMPLOYEE_JOB
 	        ,START_DATE
@@ -57,7 +58,8 @@
         (
 	        (SELECT TO_NUMBER(NVL(MAX(EMPLOYEE_ID),1)) FROM EMPLOYEE)+1
 	        ,#{employeeName}
-	        ,#{ssNumber}
+	        ,#{ssNumber1}
+	        ,#{ssNumber2}
 	        ,#{department}
 	        ,#{employeeJob}
 	        ,TO_DATE(#{startDate},'YY-MM-DD')
@@ -199,11 +201,17 @@
 	SET
 		EMPLOYEE_NAME=#{employeeName}
 		,DEPARTMENT=#{department}
-		,SS_NUMBER=#{ssNumber}
+		,SS_NUMBER1=#{ssNumber1}
+		,SS_NUMBER2=#{ssNumber2}
 		,EMPLOYEE_JOB=#{employeeJob}
 		,START_DATE=#{startDate}
 		,REGI_DATE=NVL(#{regiDate},NULL)
 		,WORK_TYPE=#{workType}
+		,EMPLOYEE_ADDR1=NVL(#{employeeAddr1},NULL)
+		,EMPLOYEE_ADDR2=NVL(#{employeeAddr2},NULL)
+		,EMPLOYEE_ADDR3=NVL(#{employeeAddr3},NULL)
+		,EMPLOYEE_ADDR4=NVL(#{employeeAddr4},NULL)
+		,EMPLOYEE_ADDR5=NVL(#{employeeAddr5},NULL)
 	WHERE
 		EMPLOYEE_ID=#{employeeId}
 

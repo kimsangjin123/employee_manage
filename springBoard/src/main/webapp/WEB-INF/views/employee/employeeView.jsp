@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>boardView</title>
+<title>employeeView</title>
 
 <script type="text/javascript">
 
@@ -71,7 +71,7 @@
 					주민번호
 					</td>
 					<td width="400">
-					${fn:substring(evo.ssNumber,0,8)}xxxxxx
+					${evo.ssNumber1} - ${fn:substring(evo.ssNumber2,0,2)}*****
 					</td>
 				</tr>
 				<tr>
@@ -104,6 +104,14 @@
 					</td>
 					<td width="400">
 					${evo.regiDate}
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="center">
+					우편번호
+					</td>
+					<td width="400">
+					${evo.employeeAddr1}
 					</td>
 				</tr>
 				<tr>

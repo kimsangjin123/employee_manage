@@ -96,7 +96,7 @@ public class EmployeeController {
 						              }
 						              if (text != null && text.contains("ssNumber")) {
 						            	  
-						            	  text = text.replace("ssNumber","준비중");
+						            	  text = text.replace("ssNumber",evo.ssNumberToString());
 						                r.setText(text,0);
 						              }
 						              if (text != null && text.contains("startDate")) {
@@ -127,7 +127,7 @@ public class EmployeeController {
 						              }
 						              if (text != null && text.contains("employeeAddress")) {
 						            	  
-						            	  text = text.replace("employeeAddress", "아직 준비중입니다" );
+						            	  text = text.replace("employeeAddress", evo.employeeAddrToString() );
 						                r.setText(text,0);
 						              }    
 						               
@@ -218,7 +218,7 @@ public class EmployeeController {
 						              }
 						              else if (text != null && text.contains("ssNumber")) {
 						            	  
-						            	  text = text.replace("ssNumber", "준비중");
+						            	  text = text.replace("ssNumber",evo.ssNumberToString());
 						                r.setText(text,0);
 						              }
 						              else if (text != null && text.contains("startDate")) {
@@ -259,7 +259,7 @@ public class EmployeeController {
 						              else if (text != null && text.contains("employeeAddress")) {
 						            	  
 						            	  // 수정할 부분
-						            	  text = text.replace("employeeAddress", "아직준비중입니다");
+						            	  text = text.replace("employeeAddress", evo.employeeAddrToString());
 						                r.setText(text,0);
 						              }    
 						               
@@ -392,10 +392,7 @@ public class EmployeeController {
 	@RequestMapping(value="/employee/employeeUpdateAction.do",method=RequestMethod.POST)
 	@ResponseBody
 	public String updateAction(Locale locale,EmployeeVo evo) throws Exception {
-		
-		
-		
-		
+	
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		CommonUtil commonUtil = new CommonUtil();
 		
@@ -438,6 +435,13 @@ public class EmployeeController {
 		List<EmployeeCodeVo> codeList=eService.employeeSelectCode();
 		
 		model.addAttribute("codeList", codeList);
-		return "employee/employeeCode";
+		return "/employee/employeeCode";
+	}
+	
+	@RequestMapping(value="/employee/test.do")
+	public String test() {
+		
+		
+		return "/employee/test";
 	}
 }

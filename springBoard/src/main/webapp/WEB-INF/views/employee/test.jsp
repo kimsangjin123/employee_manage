@@ -1,12 +1,51 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="euc-kr"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<title>test</title>
+
 </head>
+<script type="text/script">
+
+$j(document).ready(function(){
+// let const var
+// È£ÀÌ½ºÆÃ var´Â  ¾îµð¼­µç ¼±¾ðµÇ¾îµµ À§·Î ¿Ã¶ó°¨, ´ë½Å ÇÒ´çÀº È£ÀÌ½ºÆÃ ¾ÈµÊ
+// È£ÀÌ½ºÆÃ ½ºÄÚÇÁ ³»ºÎ ¾îµð¼­µç º¯¼ö ¼±¾ðÀº À§·Î °£´Ù
+// Temporal Dead Zone = TDZ
+/* 
+	javascript °øºÎ
+
+	È£ÀÌ½ºÆÃÀº ½ºÄÚÇÁ´ÜÀ§·Î ÀÏ¾î³­´Ù.
+	º¯¼ö »ý¼º°úÁ¤ ¼±¾ð ÃÊ±âÈ­ ÇÒ´ç
+	var ¼±¾ð ÃÊ±âÈ­ µ¿½Ã¿¡ µÊ
+	let ¼±¾ð´Ü°èÃÊ±âÈ­ ´Ü°è°¡ ºÐ¸®µÊ
+	const ¼±¾ð ÃÊ±âÈ­ ÇÒ´ç µ¿½Ã¿¡ µÊ ¼±¾ð¸¸ ºÒ°¡´É
+	
+	var ÇÔ¼ö ½ºÄÚÇÁ
+	let const ºí·Ï ½ºÄÚÇÁ
+	
+	-> if ¹® ¾È¿¡¼­ ¼±¾ðµÈ var txt´Â ¹Û¿¡¼­µµ »ç¿ë °¡´ÉÇÏ´Ù
+	´ë½Å function ¾È¿¡¼­´Â var¸¦ ¹Û¿¡¼­ »ç¿ë ¸øÇÑ´Ù
+	
+	»ý¼ºÀÚ ÇÔ¼ö
+	°´Ã¼ ¸®ÅÍ·²
+	let user ={
+		name : 'Mike',
+		age : 30,
+	}
+	
+	°³¹ß½Ã¿¡ ÀÌ·± ÇÔ¼ö¸¦ ¿©·¯°³ ¸¸µé ¼ö ÀÖ´Ù
+	»ý¼ºÀÚ ÇÔ¼ö Ã¹±ÛÀÚ¸¦ ´ë¹®ÀÚ·Î 
+	
+	document.getElementById("test");
+	
+*/
+});
+</script>
 <body>
-ã…Žã…‡
+<div id="test"></div>
 </body>
 </html>

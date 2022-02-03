@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>boardWrite</title>
+<title>employeeWrite</title>
 </head>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
@@ -23,8 +23,8 @@
 		var ssNumber2=$j('input[name="ssNumber2"]');
 		
 		ssNumber1.on('keyup',function(){
-		ssNumber=$j('input[name="ssNumber1"]');
-		if(ssNumber.val().length==6){
+		ssNumber1=$j('input[name="ssNumber1"]');
+		if(ssNumber1.val().length==6){
 			ssNumber2.focus();
 		}
 		});
@@ -43,7 +43,8 @@
 				alert('형식에 맞지 않는 주민번호입니다');
 				ssNumber1.focus();
 			}else{
-				// writeAction();
+
+				writeAction();
 			}
 
 			
@@ -59,6 +60,7 @@
 function writeAction(){
 			var $frm = $j('.employeeWriteFrm :input');
 			var param = $frm.serialize();
+
 			$j.ajax({
 			    url : "/employee/writeAction.do",
 			    dataType: "json",
