@@ -1,7 +1,5 @@
 package com.spring.board.vo;
 
-import java.time.LocalDate;
-
 public class EmployeeVo {
 	private int employeeId;
 	private String employeeName;
@@ -11,9 +9,6 @@ public class EmployeeVo {
 	private String employeeJob;
 	private String startDate;
 	private String regiDate;
-	private String endDate;
-	private String workDays;
-	private String issuanceNumber;
 	private String workType;
 	private String sal;	
 	private String employeeAddr1;
@@ -21,6 +16,19 @@ public class EmployeeVo {
 	private String employeeAddr3;
 	private String employeeAddr4;
 	private String employeeAddr5;
+	
+	/* 테이블에 없는 변수들, 문서를 위해 만들었다*/
+	private String endDate;
+	private int workDays;
+	private int workYears;
+	private int workMonths;
+	private int totalWorkDays;
+	private String issuanceNumber;
+	
+	private String workDaysToString;
+	private String employeeAddrToString;
+	private String todayDateToString;
+	
 	private EmployeeCodeVo employeeCodeVo;
 
 	public Integer getEmployeeId() {
@@ -62,14 +70,6 @@ public class EmployeeVo {
 		this.department = department;
 	}
 
-
-	public String getWorkDays() {
-
-		return workDays;
-	}
-	public void setWorkDays(String wordkDays) {
-		this.workDays = wordkDays;
-	}
 	public String getIssuanceNumber() {
 		return issuanceNumber;
 	}
@@ -103,12 +103,7 @@ public class EmployeeVo {
 	public void setRegiDate(String regiDate) {
 		this.regiDate = regiDate;
 	}
-	public String getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
+
 	public void setEmployeeId(int employeeId) {
 		this.employeeId = employeeId;
 	}
@@ -149,19 +144,56 @@ public class EmployeeVo {
 		this.employeeAddr5 = employeeAddr5;
 	}
 	
-
-	public String ssNumberToString() {
-		
-		return getSsNumber1()+"-"+ getSsNumber2();
+	
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public int getWorkDays() {
+		return workDays;
+	}
+	public void setWorkDays(int workDays) {
+		this.workDays = workDays;
+	}
+	public int getWorkYears() {
+		return workYears;
+	}
+	public void setWorkYears(int workYears) {
+		this.workYears = workYears;
+	}
+	public int getWorkMonths() {
+		return workMonths;
+	}
+	public void setWorkMonths(int workMonths) {
+		this.workMonths = workMonths;
+	}
+	public int getTotalWorkDays() {
+		return totalWorkDays;
+	}
+	public void setTotalWorkDays(int totalWorkDays) {
+		this.totalWorkDays = totalWorkDays;
+	}
+	public String getWorkDaysToString() {
+		return workDaysToString;
+	}
+	public void setWorkDaysToString(String workDaysToString) {
+		this.workDaysToString = workDaysToString;
+	}
+	public String getEmployeeAddrToString() {
+		return employeeAddrToString;
+	}
+	public void setEmployeeAddrToString(String employeeAddrToString) {
+		this.employeeAddrToString = employeeAddrToString;
+	}
+	public String getTodayDateToString() {
+		return todayDateToString;
+	}
+	public void setTodayDateToString(String todayDateToString) {
+		this.todayDateToString = todayDateToString;
 	}
 	
-	public String employeeAddrToString() {
-		
-		String addr= (getEmployeeAddr2()!=null) ? getEmployeeAddr2():getEmployeeAddr3();
-		addr+=getEmployeeAddr4()!=null?(", "+getEmployeeAddr4()):"";
-		
-		return addr;
-	}
 	
 	
 }

@@ -183,7 +183,7 @@ $j(item).find('.creatorIndex').attr('name','boardVoList['+index+'].creator');
 						<textarea class="boardCommentIndex" name="boardVoList[0].boardComment"  rows="20" cols="55">${board.boardComment}</textarea>
 						</td>
 					</tr>
-						<input type=hidden class="creatorIndex" name="boardVoList[0].creator" value="${sessionScope.userId}">
+						<input type="hidden" class="creatorIndex" name="boardVoList[0].creator" value="${sessionScope.userId}">
 				</tbody>
 				
 				<tbody class="writer">

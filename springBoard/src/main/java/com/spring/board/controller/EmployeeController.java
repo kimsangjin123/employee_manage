@@ -35,6 +35,7 @@ import com.spring.board.vo.EmployeeCodeVo;
 import com.spring.board.vo.EmployeePageVo;
 import com.spring.board.vo.EmployeeVo;
 import com.spring.common.CommonUtil;
+import com.spring.common.DocumentToString;
 
 @Controller
 public class EmployeeController {
@@ -51,11 +52,10 @@ public class EmployeeController {
 	public void employeement(HttpServletResponse response,EmployeeVo evo) throws Exception
 	{
 		
-		
-		LocalDate ldate=LocalDate.now();
-		String todayDate=ldate.getYear()+"년"+ldate.getMonthValue()+"월"+ldate.getDayOfMonth()+"일";
 		String textPath="D:\\git\\springBoard\\src\\main\\resources\\TFF_재직증명서.docx";
 		evo=eService.employeeSelectOne(evo);
+		// DocumentToString dts=new DocumentToString();
+		
 		File f=new File(textPath);
 		
 		// File directory = new File(WORDFILE);
@@ -74,7 +74,7 @@ public class EmployeeController {
 					        for (XWPFRun r : runs) {
 					            String text = r.getText(0);
 					            if (text != null && text.contains("issuanceNumber")) {
-					                text = text.replace("issuanceNumber", ldate+"호");
+					                text = text.replace("issuanceNumber", evo.getIssuanceNumber()+"호");
 					                r.setText(text, 0);
 					            }
 					        }
@@ -96,7 +96,7 @@ public class EmployeeController {
 						              }
 						              if (text != null && text.contains("ssNumber")) {
 						            	  
-						            	  text = text.replace("ssNumber",evo.ssNumberToString());
+						            	  text = text.replace("ssNumber",evo.getSsNumber1()+"-"+evo.getSsNumber2());
 						                r.setText(text,0);
 						              }
 						              if (text != null && text.contains("startDate")) {
@@ -122,12 +122,12 @@ public class EmployeeController {
 
 						              if (text != null && text.contains("todayDate")) {
 						            	  
-						            	  text = text.replace("todayDate", todayDate);
+						            	  text = text.replace("todayDate",evo.getTodayDateToString());
 						                r.setText(text,0);
 						              }
 						              if (text != null && text.contains("employeeAddress")) {
 						            	  
-						            	  text = text.replace("employeeAddress", evo.employeeAddrToString() );
+						            	  text = text.replace("employeeAddress",evo.getEmployeeAddrToString());
 						                r.setText(text,0);
 						              }    
 						               
@@ -176,13 +176,12 @@ public class EmployeeController {
 		LocalDate ldate=LocalDate.now();
 		String issuanceNumber;	// 월 길이가 1일 때 0 하나 추가해야함
 		issuanceNumber=ldate.toString().replace("-", "").substring(2)+"001";
-		String todayDate=ldate.getYear()+"년"+ldate.getMonthValue()+"월"+ldate.getDayOfMonth()+"일";
+		// String todayDate=ldate.getYear()+"년"+ldate.getMonthValue()+"월"+ldate.getDayOfMonth()+"일";
 		// String textPath="D:/employee/TFF_경력증명서.docx";
 		String textPath="D:\\git\\springBoard\\src\\main\\resources\\TFF_경력증명서.docx";
 		
 		
 		// workDays가 365보다 클 때 년으로 나타내기
-		evo.setWorkDays(evo.getWorkDays()+"일");
 		
 		File f=new File(textPath);
 		
@@ -218,7 +217,7 @@ public class EmployeeController {
 						              }
 						              else if (text != null && text.contains("ssNumber")) {
 						            	  
-						            	  text = text.replace("ssNumber",evo.ssNumberToString());
+						            	  text = text.replace("ssNumber",evo.getSsNumber1()+"-"+evo.getSsNumber2());
 						                r.setText(text,0);
 						              }
 						              else if (text != null && text.contains("startDate")) {
@@ -243,12 +242,12 @@ public class EmployeeController {
 						              }
 						              else if (text != null && text.contains("workDays")) {
 						            	  
-						            	  text = text.replace("workDays", evo.getWorkDays());
+						            	  text = text.replace("workDays", evo.getWorkDaysToString());
 						                r.setText(text,0);
 						              }
 						              else if (text != null && text.contains("todayDate")) {
 						            	  
-						            	  text = text.replace("todayDate", todayDate);
+						            	  text = text.replace("todayDate", evo.getTodayDateToString());
 						                r.setText(text,0);
 						              }
 						              else if (text != null && text.contains("workType")) {
@@ -259,7 +258,7 @@ public class EmployeeController {
 						              else if (text != null && text.contains("employeeAddress")) {
 						            	  
 						            	  // 수정할 부분
-						            	  text = text.replace("employeeAddress", evo.employeeAddrToString());
+						            	  text = text.replace("employeeAddress", evo.getEmployeeAddrToString());
 						                r.setText(text,0);
 						              }    
 						               
@@ -341,7 +340,6 @@ public class EmployeeController {
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		CommonUtil commonUtil = new CommonUtil();
-
 		
 		int page=1;
 		if(employeePageVo.getPageNo()==0)

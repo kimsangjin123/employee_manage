@@ -28,7 +28,7 @@
 			ssNumber2.focus();
 		}
 		});
-		
+		 
 		var ssNumberChk=$j('#ssNumberChk');
 		ssNumberChk.click(function(){
 		ssNumberValidate();

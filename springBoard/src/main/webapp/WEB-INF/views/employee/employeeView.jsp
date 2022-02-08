@@ -42,9 +42,6 @@
 			
 			}
 
-			
-			
-			
 		});
 	
 
@@ -71,7 +68,7 @@
 					林刮锅龋
 					</td>
 					<td width="400">
-					${evo.ssNumber1} - ${fn:substring(evo.ssNumber2,0,2)}*****
+					${evo.ssNumber1} - ${fn:substring(evo.ssNumber2,0,1)}******
 					</td>
 				</tr>
 				<tr>
@@ -103,7 +100,7 @@
 					硼荤老
 					</td>
 					<td width="400">
-					${evo.regiDate}
+					${evo.endDate}
 					</td>
 				</tr>
 				<tr>
@@ -112,6 +109,14 @@
 					</td>
 					<td width="400">
 					${evo.employeeAddr1}
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="center">
+					林家
+					</td>
+					<td width="400">
+					${evo.employeeAddrToString}
 					</td>
 				</tr>
 				<tr>

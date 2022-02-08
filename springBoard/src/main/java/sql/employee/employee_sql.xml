@@ -7,22 +7,32 @@
     <result property="employeeName" column="EMPLOYEE_NAME"/>
     <result property="ssNumber1" column="SS_NUMBER1"/>
     <result property="ssNumber2" column="SS_NUMBER2"/>
-    
-    
     <result property="department" column="DEPARTMENT"/>
-     <result property="employeeJob" column="EMPLOYEE_JOB"/>
+    <result property="employeeJob" column="EMPLOYEE_JOB"/>
     <result property="startDate" column="START_DATE"/>
     <result property="regiDate" column="REGI_DATE"/>
     <result property="sal" column="SAL"/>
     <result property="workType" column="WORK_TYPE"/>
-    <result property="workDays" column="WORK_DAYS"/>
-    <result property="endDate" column="END_DATE"/>
+
     <result property="employeeAddr1" column="EMPLOYEE_ADDR1"/>
     <result property="employeeAddr2" column="EMPLOYEE_ADDR2"/>
     <result property="employeeAddr3" column="EMPLOYEE_ADDR3"/>
     <result property="employeeAddr4" column="EMPLOYEE_ADDR4"/>
     <result property="employeeAddr5" column="EMPLOYEE_ADDR5"/>
+    
+    <result property="endDate" column="END_DATE"/>
+    <result property="totalWorkDays" column="TOTAL_WORK_DAYS"/>
+    <result property="workDays" column="WORK_DAYS"/>
+    <result property="workYears" column="WORK_YEARS"/>
+    <result property="workMonths" column="WORK_MONTHS"/>
+
+   	<result property="employeeAddrToString" column="EMPLOYEE_ADDR_TO_STRING"/>
+   	<result property="todayDateToString" column="TODAY_DATE_TO_STRING"/>
+   	<result property="workDaysToString" column="WORK_DAYS_TO_STRING"/>
+
+    
 	<collection property="employeeCodeVo" resultMap="EmployeeCodeVo"/>
+
     </resultMap>
 	
 	<resultMap type="com.spring.board.vo.EmployeeCodeVo" id="EmployeeCodeVo">
@@ -139,20 +149,65 @@
 		 ,B.CODE_NAME AS DEPARTMENT
 		 ,C.CODE_NAME AS EMPLOYEE_JOB
 		 ,D.CODE_NAME AS WORK_TYPE
-		 ,TO_CHAR(A.START_DATE,'YYYY-MM-DD') AS START_DATE
-		 ,TO_CHAR(A.REGI_DATE,'YYYY-MM-DD') AS REGI_DATE
+         ,A.START_DATE
+         ,A.REGI_DATE
 		 ,A.SS_NUMBER1
 		 ,A.SS_NUMBER2
-		 ,TO_CHAR(NVL(A.REGI_DATE - A.START_DATE,CEIL(SYSDATE-A.START_DATE))) AS WORK_DAYS
-		 ,TO_CHAR(NVL(A.REGI_DATE,SYSDATE),'YYYY-MM-DD') AS END_DATE
 		 ,A.EMPLOYEE_ADDR1
 		 ,A.EMPLOYEE_ADDR2
 		 ,A.EMPLOYEE_ADDR3
 		 ,A.EMPLOYEE_ADDR4
 		 ,A.EMPLOYEE_ADDR5
-		 
+		 ,A.TOTAL_WORK_DAYS
+		 ,A.WORK_YEARS
+		 ,A.WORK_MONTHS
+		 ,A.WORK_DAYS
+		 ,A.END_DATE
+		 ,A.EMPLOYEE_ADDR_TO_STRING
+		 ,A.TODAY_DATE_TO_STRING
+         ,(CASE
+    	 	WHEN A.WORK_YEARS != 0
+    	 		THEN TO_CHAR(A.WORK_YEARS)||'년'
+    	 	WHEN A.WORK_MONTHS != 0
+    	 		THEN TO_CHAR(A.WORK_MONTHS)||'개월'
+            WHEN A.WORK_MONTHS = 0
+                THEN TO_CHAR(A.WORK_DAYS) ||'일'
+            END) AS WORK_DAYS_TO_STRING
 	FROM
-		EMPLOYEE A
+		(
+		SELECT
+			  EMPLOYEE_ID
+			 ,EMPLOYEE_NAME
+			 ,DEPARTMENT AS DPT
+			 ,EMPLOYEE_JOB AS E_JOB
+             ,WORK_TYPE AS W_TYPE
+			 ,SS_NUMBER1
+			 ,SS_NUMBER2
+             ,TO_CHAR(START_DATE,'YYYY-MM-DD') AS START_DATE
+             ,TO_CHAR(REGI_DATE,'YYYY-MM-DD') AS REGI_DATE
+			 ,EMPLOYEE_ADDR1
+			 ,EMPLOYEE_ADDR2
+			 ,EMPLOYEE_ADDR3
+			 ,EMPLOYEE_ADDR4
+			 ,EMPLOYEE_ADDR5
+			 
+			 ,CEIL(NVL(REGI_DATE,SYSDATE)-START_DATE) AS TOTAL_WORK_DAYS
+			 ,TRUNC(MONTHS_BETWEEN(NVL(REGI_DATE,SYSDATE),START_DATE)/12) AS WORK_YEARS
+			 ,TRUNC((MOD(MONTHS_BETWEEN(NVL(REGI_DATE,SYSDATE),START_DATE),12))) AS WORK_MONTHS
+			 ,CEIL(MOD(MOD(MONTHS_BETWEEN(NVL(REGI_DATE,SYSDATE),START_DATE),12),1)*(365/12)) AS WORK_DAYS
+			 ,NVL(TO_CHAR(REGI_DATE,'YYYY-MM-DD'),'재직중') AS END_DATE
+			 ,NVL(EMPLOYEE_ADDR2,EMPLOYEE_ADDR3) ||','|| EMPLOYEE_ADDR4 AS EMPLOYEE_ADDR_TO_STRING
+			 
+			 ,TO_CHAR(EXTRACT(YEAR FROM SYSDATE))||'년'||
+	    		TO_CHAR(EXTRACT(MONTH FROM SYSDATE))||'월'||
+	    			TO_CHAR(EXTRACT(DAY FROM SYSDATE))||'일'	AS TODAY_DATE_TO_STRING
+	    	
+		FROM
+			EMPLOYEE
+        WHERE
+            EMPLOYEE_ID= #{employeeId}
+		
+		) A
 		,(
 			SELECT
 				CODE_ID
@@ -183,13 +238,11 @@
 
 		
 	WHERE
-		A.DEPARTMENT=B.CODE_ID
+		A.DPT=B.CODE_ID
 	AND
-		A.EMPLOYEE_JOB=C.CODE_ID
+		A.E_JOB=C.CODE_ID
 	AND
-		A.WORK_TYPE=D.CODE_ID	
-	AND
-		A.EMPLOYEE_ID=#{employeeId}
+		A.W_TYPE=D.CODE_ID
 
 	
 </select>

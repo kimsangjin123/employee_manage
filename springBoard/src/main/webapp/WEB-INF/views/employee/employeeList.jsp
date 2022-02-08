@@ -43,6 +43,10 @@ function getPage(pageNo){
 					for(var i=0; i<eList.length; i++){
 				
 					rowData+="<tr>";
+					rowData+="<td><input type='checkbox' name='documentTypeList'";
+					rowData+="value='"+eList[i]['employeeId']+"'></td>";
+
+					
 					rowData+="<td>"+eList[i]['department']+"</td>";
 					rowData+="<td>"+eList[i]['employeeJob']+"</td>";
 					
@@ -65,7 +69,7 @@ function getPage(pageNo){
 					var pageNo = employeePageVo.pageNo;
 					var pagingRowData="";
 					
-					pagingRowData+="<tr><td colspan='3'>";
+					pagingRowData+="<tr><td colspan='4'>";
 					
 					if(pageNo<=10){
 					
@@ -110,7 +114,28 @@ function getPage(pageNo){
 
 
 }
+function getDocumentList(){
 
+			$j.ajax({
+			    url : "/employee/getDocumentList.do",
+			    dataType: "json",
+			    type: "POST",
+			    data : param,
+			    contentType: 'application/x-www-form-urlencoded; charset=euc-kr',
+
+			    success: function(data, textStatus, jqXHR)
+			    {
+					alert(data.success);
+
+				
+			    },
+			    error: function (jqXHR, textStatus, errorThrown)
+			    {
+			    	alert("실패");
+			    }
+			});
+
+}
 
 </script>
 <body>
@@ -129,6 +154,9 @@ function getPage(pageNo){
 		<td>
 			<table id="boardTable" border = "1">
 				<tr>
+					<td width="80" align="center">
+						발급서류
+					</td>
 					<td width="80" align="center">
 						부서
 					</td>
@@ -170,5 +198,9 @@ function getPage(pageNo){
 		</td>
 	</tr>
 </table>	
+
+
+
+
 </body>
 </html>
