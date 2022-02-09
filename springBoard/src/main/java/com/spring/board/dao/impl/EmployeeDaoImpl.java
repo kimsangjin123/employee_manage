@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.board.dao.EmployeeDao;
+import com.spring.board.vo.DocFileBoardVo;
 import com.spring.board.vo.EmployeeCodeVo;
 import com.spring.board.vo.EmployeePageVo;
 import com.spring.board.vo.EmployeeVo;
+import com.spring.board.vo.IssuedNumberVo;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -50,6 +52,18 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public List<EmployeeCodeVo> employeeSelectCode() throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("employee.employeeSelectCode");
+	}
+	@Override
+	public int employeeDocInsertIssuedNumber(IssuedNumberVo issuedNumberVo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("employee.employeeDocInsertIssuedNumber", issuedNumberVo);
+
+	
+	}
+	@Override
+	public DocFileBoardVo getdocFileOne(EmployeeVo evo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("employee.getdocFileOne", evo);
 	}
 
 }

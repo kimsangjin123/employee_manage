@@ -23,7 +23,6 @@ public class EmployeeVo {
 	private int workYears;
 	private int workMonths;
 	private int totalWorkDays;
-	private String issuanceNumber;
 	
 	private String workDaysToString;
 	private String employeeAddrToString;
@@ -70,12 +69,6 @@ public class EmployeeVo {
 		this.department = department;
 	}
 
-	public String getIssuanceNumber() {
-		return issuanceNumber;
-	}
-	public void setIssuanceNumber(String issuanceNumber) {
-		this.issuanceNumber = issuanceNumber;
-	}
 
 	public String getSal() {
 		return sal;

@@ -42,6 +42,19 @@
 	<result property="codeId" column="CODE_ID"/>
 	
 	</resultMap>
+	
+	<resultMap type="com.spring.board.vo.IssuedNumberVo" id="IssuedNumberVo">
+	<result property="issuanceNumber" column="ISSUANCE_NUMBER"/>
+	<result property="employeeId" column="EMPLOYEE_ID"/>
+	<result property="issuedDate" column="ISSUED_DATE"/>
+	<result property="creator" column="CREATOR"/>
+	</resultMap>
+	
+	<resultMap type="com.spring.board.vo.DocFileBoardVo" id="DocFileBoardVo">
+	<result property="workType" column="WORK_TYPE" />
+	<result property="docFileId" column="DOC_FILE " />
+	<result property="docFileName" column="" />
+	</resultMap>
 
 <insert id="insert" parameterType="com.spring.board.vo.EmployeeVo">
   /*employee.insert*/ 
@@ -196,7 +209,7 @@
 			 ,TRUNC((MOD(MONTHS_BETWEEN(NVL(REGI_DATE,SYSDATE),START_DATE),12))) AS WORK_MONTHS
 			 ,CEIL(MOD(MOD(MONTHS_BETWEEN(NVL(REGI_DATE,SYSDATE),START_DATE),12),1)*(365/12)) AS WORK_DAYS
 			 ,NVL(TO_CHAR(REGI_DATE,'YYYY-MM-DD'),'재직중') AS END_DATE
-			 ,NVL(EMPLOYEE_ADDR2,EMPLOYEE_ADDR3) ||','|| EMPLOYEE_ADDR4 AS EMPLOYEE_ADDR_TO_STRING
+			 ,NVL(EMPLOYEE_ADDR2,EMPLOYEE_ADDR3) ||', '|| EMPLOYEE_ADDR4 AS EMPLOYEE_ADDR_TO_STRING
 			 
 			 ,TO_CHAR(EXTRACT(YEAR FROM SYSDATE))||'년'||
 	    		TO_CHAR(EXTRACT(MONTH FROM SYSDATE))||'월'||
@@ -290,6 +303,40 @@
 		EMPLOYEE_CODE
 	ORDER BY
 		CODE_ID
+
+</select>
+
+<insert keyProperty="issuanceNumber" id="employeeDocInsertIssuedNumber" parameterType="com.spring.board.vo.IssuedNumberVo">
+
+	/* employee.employeeDocInsertIssuedNumber */
+    <selectKey resultType="Integer" keyProperty="issuanceNumber" keyColumn="ISSUANCE_NUMBER" order="BEFORE">
+       	SELECT
+		    (CASE
+		       WHEN TRUNC(NVL(MAX(ISSUED_DATE),SYSDATE-1)) = TRUNC(SYSDATE)
+		        THEN MAX(ISSUANCE_NUMBER)+1
+		        ELSE TO_NUMBER(RPAD(TO_CHAR(SYSDATE,'YYMMDD'),9,0))+1
+		    END) AS ISSUANCE_NUMBER
+	    FROM
+	    	ISSUED_NUMBER
+    </selectKey>  
+INSERT INTO
+    ISSUED_NUMBER
+    (
+        ISSUANCE_NUMBER
+        ,EMPLOYEE_ID
+        ,ISSUED_DATE
+    )
+    VALUES
+    (
+		#{issuanceNumber}
+	    ,#{employeeId} 
+	    ,SYSDATE
+    )
+
+</insert>
+
+<select id="getdocFileOne" parameterType="com.spring.board.vo. EmployeeVo" resultMap="DocFileBoardVo">
+
 
 </select>
 

@@ -13,6 +13,7 @@
 
 			getPage(1);
 			
+
 		
 	});
 
@@ -44,15 +45,16 @@ function getPage(pageNo){
 				
 					rowData+="<tr>";
 					rowData+="<td><input type='checkbox' name='documentTypeList'";
+					rowData+="class='documentTypeList'";
+					rowData+="onclick='javacscript:getDocFile(this)'"
 					rowData+="value='"+eList[i]['employeeId']+"'></td>";
-
 					
 					rowData+="<td>"+eList[i]['department']+"</td>";
 					rowData+="<td>"+eList[i]['employeeJob']+"</td>";
 					
 					// 랙
 					rowData+="<td><a href='./employeeView.do?";
-				
+					
 					rowData+="employeeId="+eList[i]['employeeId'];
 					rowData+="'</a>"+eList[i]['employeeName']+"</td>";
 					rowData+="</tr>";
@@ -122,11 +124,11 @@ function getDocumentList(){
 			    type: "POST",
 			    data : param,
 			    contentType: 'application/x-www-form-urlencoded; charset=euc-kr',
-
+				
 			    success: function(data, textStatus, jqXHR)
 			    {
 					alert(data.success);
-
+				
 				
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
@@ -135,6 +137,44 @@ function getDocumentList(){
 			    }
 			});
 
+}
+
+function getDocFile(param1){
+			
+			let documentTypeList=$j("input[name='documentTypeList']");
+			documentTypeList.each(function(){
+			if(this.checked){
+				alert(this.value);
+			}
+			
+			});
+			
+		/*
+		if(param1.checked){
+			
+			alert(param1.checked);
+			alert(param1.value);
+			let param={employeeId:param1.value};
+				$j.ajax({
+				    url : "/employee/getDocFile.do",
+				    dataType: "json",
+				    type: "POST",
+				    data : param,
+				    contentType: 'application/x-www-form-urlencoded; charset=euc-kr',
+		
+				    success: function(data, textStatus, jqXHR)
+				    {
+						alert(data.success);
+		
+				    },
+				    error: function (jqXHR, textStatus, errorThrown)
+				    {
+				    	alert("실패");
+				    }
+				});
+		
+		}
+		*/
 }
 
 </script>
@@ -199,6 +239,24 @@ function getDocumentList(){
 	</tr>
 </table>	
 
+<table border="1" align="center" id="docBoardTable">
+<tr>
+	<td>
+		사원이름
+	</td>
+	<td>
+		근무형태
+	</td>
+	<td width="300px" align="center">
+		서류
+	</td>
+
+<tr>
+
+<tbody id="docBoardTbody">
+
+<tbody>
+</table>
 
 
 

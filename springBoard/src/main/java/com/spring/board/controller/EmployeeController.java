@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -31,9 +32,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.board.HomeController;
 import com.spring.board.service.EmployeeService;
+import com.spring.board.vo.DocFileBoardVo;
 import com.spring.board.vo.EmployeeCodeVo;
 import com.spring.board.vo.EmployeePageVo;
 import com.spring.board.vo.EmployeeVo;
+import com.spring.board.vo.IssuedNumberVo;
 import com.spring.common.CommonUtil;
 import com.spring.common.DocumentToString;
 
@@ -49,13 +52,17 @@ public class EmployeeController {
 			// ,produces="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 			)
 	@ResponseBody
-	public void employeement(HttpServletResponse response,EmployeeVo evo) throws Exception
+	public void employeement(HttpServletResponse response,HttpServletRequest request,EmployeeVo evo) throws Exception
 	{
-		
-		String textPath="D:\\git\\springBoard\\src\\main\\resources\\TFF_재직증명서.docx";
+		String textPath=request.getSession().getServletContext().getRealPath("/");
+		textPath+="/resources/TFF_재직증명서.docx";
+		logger.info(textPath);
 		evo=eService.employeeSelectOne(evo);
-		// DocumentToString dts=new DocumentToString();
-		
+		IssuedNumberVo issuedNumberVo=new IssuedNumberVo();
+		issuedNumberVo.setEmployeeId(evo.getEmployeeId());
+		eService.employeeDocInsertIssuedNumber(issuedNumberVo);
+			
+		logger.info(issuedNumberVo.getIssuanceNumber()+"");
 		File f=new File(textPath);
 		
 		// File directory = new File(WORDFILE);
@@ -74,7 +81,7 @@ public class EmployeeController {
 					        for (XWPFRun r : runs) {
 					            String text = r.getText(0);
 					            if (text != null && text.contains("issuanceNumber")) {
-					                text = text.replace("issuanceNumber", evo.getIssuanceNumber()+"호");
+					                text = text.replace("issuanceNumber",String.valueOf(issuedNumberVo.getIssuanceNumber()));
 					                r.setText(text, 0);
 					            }
 					        }
@@ -169,16 +176,19 @@ public class EmployeeController {
 			// ,produces="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 			)
 	@ResponseBody
-	public void career(HttpServletResponse response,EmployeeVo evo) throws Exception
+	public void career(HttpServletResponse response,HttpServletRequest request,EmployeeVo evo) throws Exception
 	{
 		evo=eService.employeeSelectOne(evo);
 		
-		LocalDate ldate=LocalDate.now();
-		String issuanceNumber;	// 월 길이가 1일 때 0 하나 추가해야함
-		issuanceNumber=ldate.toString().replace("-", "").substring(2)+"001";
-		// String todayDate=ldate.getYear()+"년"+ldate.getMonthValue()+"월"+ldate.getDayOfMonth()+"일";
-		// String textPath="D:/employee/TFF_경력증명서.docx";
-		String textPath="D:\\git\\springBoard\\src\\main\\resources\\TFF_경력증명서.docx";
+		IssuedNumberVo issuedNumberVo=new IssuedNumberVo();
+		issuedNumberVo.setEmployeeId(evo.getEmployeeId());
+		eService.employeeDocInsertIssuedNumber(issuedNumberVo);
+		
+		
+		String textPath=request.getSession().getServletContext().getRealPath("/");
+		textPath+="/resources/TFF_경력증명서.docx";
+		
+		logger.info(textPath);
 		
 		
 		// workDays가 365보다 클 때 년으로 나타내기
@@ -207,7 +217,7 @@ public class EmployeeController {
 						              
 						              if (text != null && text.contains("issuanceNumber")) {
 						            	  
-						            	  text = text.replace("issuanceNumber", issuanceNumber);
+						            	  text = text.replace("issuanceNumber", String.valueOf(issuedNumberVo.getIssuanceNumber()));
 						                r.setText(text,0);
 						              }
 						              else if (text != null && text.contains("employeeName")) {
@@ -441,5 +451,25 @@ public class EmployeeController {
 		
 		
 		return "/employee/test";
+	}
+	
+	
+	@RequestMapping(value="/employee/getDocFile.do")
+	@ResponseBody
+	public String getDocFile(Locale locale,EmployeeVo evo) throws Exception {
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		CommonUtil commonUtil = new CommonUtil();
+		
+		int resultCnt=0;
+		
+		DocFileBoardVo docFileBoardVo=eService.getdocFileOne(evo);
+		
+		result.put("success", (resultCnt >0)?"Y":"N");
+		String callbackMsg = commonUtil.getJsonCallBackString(" ",result);
+		
+		System.out.println("callbackMsg::"+callbackMsg);
+		
+		return callbackMsg;
 	}
 }
